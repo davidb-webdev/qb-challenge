@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Product } from '@/types/Product'
+import ProductCard from './ProductCard'
 
 interface PaginationData {
   page: number
@@ -20,10 +21,10 @@ export function ProductGrid() {
     total: 0,
     totalPages: 0,
     hasNextPage: false,
-    hasPrevPage: false
+    hasPrevPage: false,
   })
   const [loading, setLoading] = useState(true)
-  
+
   const fetchProducts = async (page: number = 1, limit: number = 10) => {
     setLoading(true)
     try {
@@ -37,7 +38,7 @@ export function ProductGrid() {
       setLoading(false)
     }
   }
-  
+
   useEffect(() => {
     fetchProducts()
   }, [])
@@ -47,10 +48,7 @@ export function ProductGrid() {
       {/* Do your magic here */}
       <div>
         {products.map((product) => (
-          <div key={product.id}>
-            <div>{product.name}</div>
-            <div>{product.price} kr</div>
-          </div>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
