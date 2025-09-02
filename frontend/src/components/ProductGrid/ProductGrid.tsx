@@ -17,7 +17,7 @@ export function ProductGrid() {
   const [products, setProducts] = useState<Product[]>([])
   const [pagination, setPagination] = useState<PaginationData>({
     page: 1,
-    limit: 10,
+    limit: 12,
     total: 0,
     totalPages: 0,
     hasNextPage: false,
@@ -25,7 +25,7 @@ export function ProductGrid() {
   })
   const [loading, setLoading] = useState(true)
 
-  const fetchProducts = async (page: number = 1, limit: number = 10) => {
+  const fetchProducts = async (page: number = 1, limit: number = 12) => {
     setLoading(true)
     try {
       const response = await fetch(`/api/products?page=${page}&limit=${limit}`)
@@ -46,7 +46,7 @@ export function ProductGrid() {
   return (
     <div>
       {/* Do your magic here */}
-      <div>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-3">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

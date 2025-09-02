@@ -1,15 +1,19 @@
 import { Product } from '@/types/Product'
+import Image from 'next/image'
 
 interface ProductCardProps {
   product: Product
 }
 
 export default function ProductCard({
-  product: { name, price },
+  product: { name, price, image_url },
 }: ProductCardProps) {
   return (
-    <div>
-      <div>{name}</div>
+    <div className="bg-gray-800 p-3 rounded-xl">
+      <div className="relative aspect-square">
+        <Image src={image_url} alt={name} fill />
+      </div>
+      <h2 className="before:hidden mt-2">{name}</h2>
       <div>{price} kr</div>
     </div>
   )
