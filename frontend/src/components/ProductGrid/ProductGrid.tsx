@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Product } from '@/types/Product'
 import ProductCard from './ProductCard'
+import ListOptions from './ListOptions'
 
 interface PaginationData {
   page: number
@@ -25,6 +26,7 @@ export function ProductGrid() {
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [displayAsGrid, setDisplayAsGrid] = useState(true)
   const intersectionRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -65,9 +67,25 @@ export function ProductGrid() {
 
   return (
     <div>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-3">
+      <ListOptions
+        displayAsGrid={displayAsGrid}
+        setDisplayAsGrid={(v) => setDisplayAsGrid(v)}
+      />
+
+      <div
+        className={
+          'grid gap-3' +
+          (displayAsGrid
+            ? ' grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]'
+            : ' grid-cols-1')
+        }
+      >
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            displayAsGrid={displayAsGrid}
+          />
         ))}
       </div>
 
