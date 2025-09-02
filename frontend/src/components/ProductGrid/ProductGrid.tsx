@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Product } from '@/types/Product'
 import ProductCard from './ProductCard'
 
@@ -24,6 +24,26 @@ export function ProductGrid() {
     hasPrevPage: false,
   })
   const [loading, setLoading] = useState(true)
+  const intersectionRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
+  // Infinity scroll pagination
+  useEffect(() => {
+    // Return early if observer element does not exist, or if already loading
+    if (!intersectionRef.current || loading) return
+
+    // Fetch products if user scrolls to observer element
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) fetchProducts(pagination.page + 1)
+    })
+    intersectionObserver.observe(intersectionRef.current)
+
+    // Clean up observer on unmount
+    return () => intersectionObserver.disconnect()
+  }, [pagination])
 
   const fetchProducts = async (page: number = 1, limit: number = 12) => {
     setLoading(true)
@@ -38,10 +58,6 @@ export function ProductGrid() {
       setLoading(false)
     }
   }
-
-  useEffect(() => {
-    fetchProducts()
-  }, [])
 
   return (
     <div>
@@ -58,6 +74,8 @@ export function ProductGrid() {
       >
         Load more
       </button>
+
+      <div ref={intersectionRef}></div>
 
       {/* This below can be removed */}
       {products.length > 0 && (
