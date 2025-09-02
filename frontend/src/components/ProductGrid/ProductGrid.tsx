@@ -30,7 +30,7 @@ export function ProductGrid() {
     try {
       const response = await fetch(`/api/products?page=${page}&limit=${limit}`)
       const data = await response.json()
-      setProducts(data.products)
+      setProducts((prev) => [...prev, ...data.products])
       setPagination(data.pagination)
     } catch (error) {
       console.error('Error fetching products:', error)
@@ -51,6 +51,13 @@ export function ProductGrid() {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
+      <button
+        disabled={!pagination.hasNextPage}
+        onClick={() => fetchProducts(pagination.page + 1)}
+      >
+        Load more
+      </button>
 
       {/* This below can be removed */}
       {products.length > 0 && (
