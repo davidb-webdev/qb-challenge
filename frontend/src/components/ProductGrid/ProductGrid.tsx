@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Product } from '@/types/Product'
 import ProductCard from './ProductCard'
 import ListOptions from './ListOptions'
+import ProductNameFilter from './ProductNameFilter'
 
 interface PaginationData {
   page: number
@@ -27,6 +28,7 @@ export function ProductGrid() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [displayAsGrid, setDisplayAsGrid] = useState(true)
+  const [nameFilter, setNameFilter] = useState<string>('')
   const intersectionRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -65,22 +67,35 @@ export function ProductGrid() {
     }
   }
 
+  const filteredProducts =
+    nameFilter !== ''
+      ? products.filter((product) =>
+          product.name.toLowerCase().includes(nameFilter.toLowerCase()),
+        )
+      : products
+
   return (
     <div>
-      <ListOptions
-        displayAsGrid={displayAsGrid}
-        setDisplayAsGrid={(v) => setDisplayAsGrid(v)}
-      />
+      <div className="flex gap-3 justify-between items-center pb-3">
+        <ProductNameFilter
+          nameFilter={nameFilter}
+          setNameFilter={setNameFilter}
+        />
+        <ListOptions
+          displayAsGrid={displayAsGrid}
+          setDisplayAsGrid={setDisplayAsGrid}
+        />
+      </div>
 
       <div
         className={
           'grid gap-3' +
           (displayAsGrid
-            ? ' grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]'
+            ? ' grid-cols-[repeat(auto-fit,minmax(14rem,1fr))]'
             : ' grid-cols-1')
         }
       >
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -94,7 +109,7 @@ export function ProductGrid() {
           <p>Couldn't load products</p>
           <button
             onClick={() => fetchProducts(pagination.page + 1)}
-            className="mt-3 p-3 px-5 bg-blue-950 hover:bg-blue-900 rounded-xl"
+            className="mt-3 p-3 px-5 bg-blue-950 hover:bg-blurple rounded-xl"
           >
             Retry
           </button>
