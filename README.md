@@ -2,6 +2,17 @@
 
 Welcome to the QuickButik coding challenge! This is a test of your ability to work with modern web technologies, including React, Next.js, Node.js, and Docker. You'll be building upon an existing codebase that demonstrates a product listing application.
 
+## 🆕 What's Changed
+- Style product cards (with product images)
+  - Optimize image loading with Next
+  - Prevent Cumulative Layout Shift (CLS)
+- Implement infinity scroll pagination
+  - Handle errors, display appropriate status/error messages
+  - Prevent additional fetching while loading 
+- Add toggle for displaying products as grid or list
+- Add a product name filter
+- Add some simple transitions in the product grid's header/options
+
 ## 🚀 Quick Start
 
 ### Prerequisites
