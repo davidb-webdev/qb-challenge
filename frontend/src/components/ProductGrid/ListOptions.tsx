@@ -7,25 +7,31 @@ export default function ListOptions({
   displayAsGrid,
   setDisplayAsGrid,
 }: ListOptionsProps) {
+  const buttons = [
+    { label: 'Grid', value: true },
+    { label: 'List', value: false },
+  ]
+
   return (
-    <div className="flex gap-3 justify-end p-3">
+    <div className="flex gap-3 items-center">
       <p>Display as:</p>
 
-      <button
-        disabled={displayAsGrid}
-        onClick={() => setDisplayAsGrid(true)}
-        className={displayAsGrid ? 'text-blue-500' : ''}
-      >
-        Grid
-      </button>
-
-      <button
-        disabled={!displayAsGrid}
-        onClick={() => setDisplayAsGrid(false)}
-        className={!displayAsGrid ? 'text-blue-500' : ''}
-      >
-        List
-      </button>
+      {buttons.map((button) => {
+        const active = displayAsGrid === button.value
+        return (
+          <button
+            key={button.label}
+            disabled={active}
+            onClick={() => setDisplayAsGrid(!displayAsGrid)}
+            className={
+              'transition-colors duration-150 enabled:hover:text-blue-200' +
+              (active ? ' text-blurple' : '')
+            }
+          >
+            {button.label}
+          </button>
+        )
+      })}
     </div>
   )
 }
