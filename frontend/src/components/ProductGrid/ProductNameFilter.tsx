@@ -23,7 +23,7 @@ export default function ProductNameFilter({
         type="search"
         value={nameFilter}
         onChange={(event) => setNameFilter(event.target.value)}
-        className="rounded-3xl text-black px-3 py-1 border-2 outline-none focus:border-blurple transition-colors"
+        className="rounded-3xl text-black px-3 py-1 border-2 outline-none focus:border-blurple transition-colors duration-150"
       />
     </div>
   )
